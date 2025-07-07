@@ -9,8 +9,15 @@ router.post('/register',async (req,res)=>{
     try{
         const { name, email, password } = req.body;
 
-        if(!name && !email && !password){
+        if(!name || !email || !password){
             res.status(401).send({error:"All fields are required!",success:false})
+        }
+
+        const isEmailRegistered = await User.findOne({ email });
+        if(isEmailRegistered) {
+            res
+              .status(401)
+              .send({ error: "Email Id is already exist!",success:false});  
         }
 
         const hashPassword = await bcryptjs.hash(password,14);
