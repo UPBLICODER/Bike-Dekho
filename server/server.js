@@ -1,6 +1,7 @@
 const express = require("express");
 const connectDB = require('./config/db');
 require('dotenv').config() // load env config
+const productRoutes = require('./routes/productRoutes')
 const userRoutes = require('./routes/userRoutes');
 const {jwtAuthMiddleware} = require('../server/jwt')
 const cors = require('cors')
@@ -21,6 +22,7 @@ app.get('/', jwtAuthMiddleware, async (req,res)=>{
     res.send("authenticated");
 })
 
+app.use('/api',productRoutes)
 
 // routes
 app.use('/user',userRoutes);
